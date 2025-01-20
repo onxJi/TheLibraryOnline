@@ -4,9 +4,10 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { FeaturedBook } from '../components/FeaturedBook';
 import { BookList } from '../components/BookList';
+import { useSearch } from '../hooks/useSearch';
 
 export const HomePage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const { searchTerm } = useSearch();
   const { books, loading, error } = useBooks(searchTerm);
 
   // Get featured book (first book from the list)

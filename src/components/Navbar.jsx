@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Search } from 'lucide-react';
+import { useSearch } from '../hooks/useSearch';
 
-export const Navbar = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+export const Navbar = () => {
+  const [localSearch, setLocalSearch] = useState('');
+  const { setSearchTerm } = useSearch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(searchTerm);
+    setSearchTerm(localSearch); 
   };
+
 
   return (
     <nav className="navbar">
@@ -24,8 +27,8 @@ export const Navbar = ({ onSearch }) => {
               type="text"
               className="search-bar"
               placeholder="Search books..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
             />
             <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
           </div>
