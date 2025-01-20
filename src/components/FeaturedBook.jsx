@@ -27,7 +27,7 @@ export const FeaturedBook = ({ book }) => {
             <img
               src={volumeInfo.imageLinks?.thumbnail || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=500'}
               alt={volumeInfo.title}
-              className="featured-book__image w-full h-40 rounded-lg shadow-2xl transform transition hover:scale-105"
+              className="featured-book__image w-full h-80 rounded-lg shadow-2xl transform transition hover:scale-105"
             />
           </div>
 
