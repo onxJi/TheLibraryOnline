@@ -20,8 +20,8 @@ export const FeaturedBook = ({ book }) => {
       </div>
 
       {/* Content */}
-      <div className="relative h-full container mx-auto px-4 flex items-center">
-        <div className="featured-book__content flex gap-8 items-center max-w-6xl">
+      <div className="relative h-full container mx-auto md:px-4 flex items-center">
+        <div className="featured-book__content flex gap-8 items-center max-w-6xl md:flex-row flex-col">
           {/* Book Cover */}
           <div className="featured-book__image-container w-80 flex-shrink-0">
             <img
@@ -39,18 +39,7 @@ export const FeaturedBook = ({ book }) => {
                 by {volumeInfo.authors.join(', ')}
               </p>
             )}
-            <div className="flex items-center mb-6">
-              <div className="flex items-center mr-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={20}
-                    className={i < Math.floor(rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}
-                  />
-                ))}
-              </div>
-              <span className="text-lg">{rating} / 5</span>
-            </div>
+
             {volumeInfo.description && (
               <p className="text-lg text-gray-300 line-clamp-4">
                 {volumeInfo.description}

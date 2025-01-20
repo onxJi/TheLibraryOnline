@@ -7,27 +7,36 @@ import { BookList } from '../components/BookList';
 import { useSearch } from '../hooks/useSearch';
 
 export const HomePage = () => {
-  const { searchTerm } = useSearch();
-  const { books, loading, error } = useBooks(searchTerm);
+ const { searchTerm } = useSearch();
 
-  // Get featured book (first book from the list)
-  const featuredBook = books[0];
+  // Buscar libros similares basados en el término de búsqueda
+  const { books: similarBooks, loading: loadingSimilar, error: errorSimilar } = useBooks(searchTerm);
 
-  // Group remaining books
-  const remainingBooks = books.slice(1);
-  const fictionBooks = remainingBooks.slice(0, 8);
-  const nonFictionBooks = remainingBooks.slice(8, 16);
+  // Obtener el libro destacado y su categoría
+  const featuredBook = similarBooks[0];
+  const category = featuredBook?.volumeInfo?.categories?.[0] || ''; 
+ 
+  // libros relacionados por categoría
+  const {
+    books: categoryBooks,
+    loading: loadingCategory,
+    error: errorCategory,
+  } = useBooks(category ? `subject:${category}` : '');
 
   return (
     <div className="min-h-screen bg-white">
-      {loading && <LoadingSpinner />}
-      {error && <ErrorMessage message={error} />}
-      {!loading && !error && (
+      {(loadingSimilar || loadingCategory) && <LoadingSpinner />}
+      {(errorSimilar || errorCategory) && (
+        <ErrorMessage message={errorSimilar || errorCategory} />
+      )}
+      {!loadingSimilar && !errorSimilar && (
         <>
           <FeaturedBook book={featuredBook} />
           <div className="container mx-auto px-4">
-            <BookList title="Popular Fiction" books={fictionBooks} />
-            <BookList title="Non-Fiction Picks" books={nonFictionBooks} />
+            <BookList title="Similar Books" books={similarBooks.slice(1, 9)} />
+            {category && (
+              <BookList title={`Books in "${category}"`} books={categoryBooks.slice(0, 8)} />
+            )}
           </div>
         </>
       )}
