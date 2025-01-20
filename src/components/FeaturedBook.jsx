@@ -8,7 +8,7 @@ export const FeaturedBook = ({ book }) => {
   const rating = volumeInfo.averageRating || 4.5; // Default rating if none provided
   
   return (
-    <div className="featured-book relative h-[70vh] mb-8">
+    <div className="featured-book relative md:h-[70vh] h-auto mb-8">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
