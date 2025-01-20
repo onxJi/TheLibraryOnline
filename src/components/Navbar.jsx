@@ -34,6 +34,11 @@ export const Navbar = () => {
           </div>
         </form>
 
+        <Link to="/categories" className="text-white hover:text-blue-300">
+          Categories
+        </Link>
+
+
         <Link to="/login" className="text-white hover:text-blue-300">
           Login
         </Link>
