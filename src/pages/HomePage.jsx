@@ -14,15 +14,14 @@ export const HomePage = () => {
 
   // Obtener el libro destacado y su categoría
   const featuredBook = similarBooks[0];
-  const category = featuredBook?.volumeInfo?.categories?.[0] || ''; 
+  const category = featuredBook?.category?.categoryName?.[0] || ''; 
  
   // libros relacionados por categoría
   const {
     books: categoryBooks,
     loading: loadingCategory,
     error: errorCategory,
-  } = useBooks(category ? `subject:${category}` : '');
-
+  } = useBooks(category ? `${category}` : '');
   return (
     <div className="min-h-screen bg-white">
       {(loadingSimilar || loadingCategory) && <LoadingSpinner />}

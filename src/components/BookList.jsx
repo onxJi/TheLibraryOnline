@@ -1,10 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { BookModal } from './BookModal';
-
+import { DynamicModal } from "./DynamicModal";
 export const BookList = ({ title, books }) => {
   const [selectedBook, setSelectedBook] = useState(null);
   const scrollContainerRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   // Función para desplazar horizontalmente
   const handleScroll = (direction) => {
@@ -19,7 +23,7 @@ export const BookList = ({ title, books }) => {
 
   return (
     <div className="book-list mb-12 relative">
-      <div className="flex items-center mb-4">
+      <div className="flex items-center">
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
       </div>
 
@@ -27,7 +31,7 @@ export const BookList = ({ title, books }) => {
         {/* Botón para desplazarse a la izquierda */}
         <button
           className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 shadow-md rounded-full hover:bg-gray-100"
-          onClick={() => handleScroll('left')}
+          onClick={() => handleScroll("left")}
           aria-label="Scroll left"
         >
           <ChevronLeft size={24} />
@@ -36,46 +40,49 @@ export const BookList = ({ title, books }) => {
         {/* Contenedor de libros con scroll horizontal */}
         <div
           ref={scrollContainerRef}
-          className="book-list__container flex gap-4 overflow-x-auto pb-4 no-scrollbar relative"
+          className="book-list__container flex gap-4 overflow-x-auto no-scrollbar relative p-4"
         >
           {books.map((book) => (
             <div
-              key={book.id}
+              key={book.bookId}
               className="book-list__item flex-shrink-0 w-48 cursor-pointer"
               onClick={() => setSelectedBook(book)}
             >
               <img
                 src={
-                  book.volumeInfo.imageLinks?.thumbnail ||
-                  'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300'
+                  book.imageUrl ||
+                  "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300"
                 }
-                alt={book.volumeInfo.title}
+                alt={book.title}
                 className="w-full h-72 object-cover rounded-lg shadow-md transition transform hover:scale-105 hover:shadow-xl"
               />
               <h3 className="mt-2 text-sm font-semibold text-gray-800 line-clamp-2">
-                {book.volumeInfo.title}
+                {book.title}
               </h3>
             </div>
           ))}
-          
-        {/* Botón para desplazarse a la derecha */}
-        <button
-          className="absolute right-0 top-1/2  z-10 bg-white p-2 shadow-md rounded-full hover:bg-gray-100"
-          onClick={() => handleScroll('right')}
-          aria-label="Scroll right"
-        >
-          <ChevronRight size={24} />
-        </button>
-        </div>
 
+          {/* Botón para desplazarse a la derecha */}
+          <button
+            className="absolute right-0 top-1/2  z-10 bg-white p-2 shadow-md rounded-full hover:bg-gray-100"
+            onClick={() => handleScroll("right")}
+            aria-label="Scroll right"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
       </div>
 
-      {selectedBook && (
-        <BookModal
-          book={selectedBook}
-          onClose={() => setSelectedBook(null)}
-        />
-      )}
+      {/* Modal */}
+      <DynamicModal
+        title="Details Book"
+        isOpen={!!selectedBook}
+        width="max-w-3xl" // Personaliza el ancho
+        maxHeight="max-h-[80vh]"
+        onClose={() => setSelectedBook(null)}
+      >
+        <BookModal book={selectedBook} />
+      </DynamicModal>
     </div>
   );
 };

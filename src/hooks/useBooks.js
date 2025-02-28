@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const useBooks = (searchTerm = '') => {
+   const apiUrl = import.meta.env.VITE_API_URL;
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -10,11 +11,11 @@ export const useBooks = (searchTerm = '') => {
     const fetchBooks = async () => {
       setLoading(true);
       try {
-        const query = searchTerm || 'subject:fiction';
+        const query = searchTerm || '';
         const response = await axios.get(
-          `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=20`
+          `${apiUrl}/books/search?text=${query}`
         );
-        setBooks(response.data.items || []);
+        setBooks(response.data || []);
         setError('');
       } catch (err) {
         setError('Error fetching books');
