@@ -1,11 +1,14 @@
-import React, { useState, useRef } from 'react';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
-import { BookModal } from './BookModal';
+import React, { useState, useRef, useEffect } from "react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
+import { BookModal } from "./BookModal";
 import { DynamicModal } from "./DynamicModal";
+
 export const BookList = ({ title, books }) => {
   const [selectedBook, setSelectedBook] = useState(null);
   const scrollContainerRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLeftButton, setShowLeftButton] = useState(false);
+  const [showRightButton, setShowRightButton] = useState(true);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -15,11 +18,43 @@ export const BookList = ({ title, books }) => {
     const scrollAmount = 300; // Cantidad de desplazamiento en píxeles
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: direction === 'right' ? scrollAmount : -scrollAmount,
-        behavior: 'smooth',
+        left: direction === "right" ? scrollAmount : -scrollAmount,
+        behavior: "smooth",
       });
     }
   };
+
+  // Verificar la posición del scroll para mostrar/ocultar botones
+  const checkScrollPosition = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
+
+      // Mostrar el botón izquierdo si hay espacio a la izquierda
+      setShowLeftButton(scrollLeft > 0);
+
+      // Mostrar el botón derecho si hay espacio a la derecha
+      setShowRightButton(scrollLeft < scrollWidth - clientWidth);
+    }
+  };
+
+  // Efecto para verificar la posición inicial y actualizar al cambiar el tamaño de la ventana
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+
+    if (container) {
+      checkScrollPosition();
+      container.addEventListener("scroll", checkScrollPosition);
+      window.addEventListener("resize", checkScrollPosition);
+
+      return () => {
+        if (container) {
+          container.removeEventListener("scroll", checkScrollPosition);
+        }
+        window.removeEventListener("resize", checkScrollPosition);
+      };
+    }
+  }, []);
 
   return (
     <div className="book-list mb-12 relative">
@@ -27,8 +62,8 @@ export const BookList = ({ title, books }) => {
         <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
       </div>
 
-      <div className="relative">
-        {/* Botón para desplazarse a la izquierda */}
+      {/* Botón para desplazarse a la izquierda */}
+      {showLeftButton && (
         <button
           className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 shadow-md rounded-full hover:bg-gray-100"
           onClick={() => handleScroll("left")}
@@ -36,7 +71,9 @@ export const BookList = ({ title, books }) => {
         >
           <ChevronLeft size={24} />
         </button>
+      )}
 
+      <div className="relative">
         {/* Contenedor de libros con scroll horizontal */}
         <div
           ref={scrollContainerRef}
@@ -61,21 +98,12 @@ export const BookList = ({ title, books }) => {
               </h3>
             </div>
           ))}
-
-          {/* Botón para desplazarse a la derecha */}
-          <button
-            className="absolute right-0 top-1/2  z-10 bg-white p-2 shadow-md rounded-full hover:bg-gray-100"
-            onClick={() => handleScroll("right")}
-            aria-label="Scroll right"
-          >
-            <ChevronRight size={24} />
-          </button>
         </div>
       </div>
 
       {/* Modal */}
       <DynamicModal
-        title="Details Book"
+        title="Detail Book"
         isOpen={!!selectedBook}
         width="max-w-3xl" // Personaliza el ancho
         maxHeight="max-h-[80vh]"
@@ -83,6 +111,17 @@ export const BookList = ({ title, books }) => {
       >
         <BookModal book={selectedBook} />
       </DynamicModal>
+
+      {/* Botón para desplazarse a la derecha */}
+      {showRightButton && (
+        <button
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white p-2 shadow-md rounded-full hover:bg-gray-100"
+          onClick={() => handleScroll("right")}
+          aria-label="Scroll right"
+        >
+          <ChevronRight size={24} />
+        </button>
+      )}
     </div>
   );
 };
