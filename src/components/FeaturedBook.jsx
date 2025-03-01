@@ -1,12 +1,12 @@
-import React from 'react';
-import { Star } from 'lucide-react';
+import React from "react";
+import { Star } from "lucide-react";
 
 export const FeaturedBook = ({ book }) => {
   if (!book) return null;
 
-  const { price, imageUrl, title, author, description } = book;
+  const { price, imageUrl, title, author, description, status } = book;
   return (
-    <div className="featured-book relative md:h-[70vh] h-auto mb-8">
+    <div className="featured-book relative md:h-[70vh] h-auto mb-8 p-2">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -39,9 +39,7 @@ export const FeaturedBook = ({ book }) => {
           <div className="featured-book__info text-white max-w-2xl">
             <h1 className="text-5xl font-bold mb-4">{title}</h1>
             {author && (
-              <p className="text-xl text-gray-300 mb-4">
-                by {author}
-              </p>
+              <p className="text-xl text-gray-300 mb-4">by {author}</p>
             )}
 
             {description && (
@@ -49,6 +47,14 @@ export const FeaturedBook = ({ book }) => {
                 {description}
               </p>
             )}
+            <div className="flex gap-[0.25rem]">
+              <span className="inline-block mt-2 text-red-700 text-[0.85rem] px-2 py-1 bg-red-200 shadow-sm transform -skew-x-12 rounded-sm">
+                Price: ${price}
+              </span>
+              <span className="inline-block mt-2 text-green-700  text-[0.85rem] px-2 py-1 bg-green-200 shadow-sm transform -skew-x-12 rounded-sm">
+                {status}
+              </span>
+            </div>
           </div>
         </div>
       </div>

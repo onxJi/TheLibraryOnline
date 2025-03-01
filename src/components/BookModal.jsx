@@ -12,6 +12,7 @@ export const BookModal = ({ book, onClose }) => {
     category,
     description,
     price,
+    status,
   } = book;
 
   return (
@@ -28,9 +29,14 @@ export const BookModal = ({ book, onClose }) => {
             className="w-full h-auto rounded-lg"
           />
         </div>
-        <span className="block mt-2 text-red-800 font-bold rounded-md bg-red-200 px-3 py-1 shadow-sm">
-          Price: ${price}
-        </span>
+        <div className="flex gap-[0.25rem]">
+          <span className="inline-block mt-2 text-red-700 text-[0.85rem] px-2 py-1 bg-red-100 shadow-sm transform -skew-x-12 rounded-sm">
+            Price: ${price}
+          </span>
+          <span className="inline-block mt-2 text-green-700  text-[0.85rem] px-2 py-1 bg-green-100 shadow-sm transform -skew-x-12 rounded-sm">
+            {status}
+          </span>
+        </div>
       </div>
 
       {/* Book Details */}
