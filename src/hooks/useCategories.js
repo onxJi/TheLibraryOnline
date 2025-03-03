@@ -1,32 +1,32 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export const useBooks = (searchTerm = "") => {
+export const useCategories = (searchTerm = "") => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const [books, setBooks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchCategories = async () => {
       setLoading(true);
       try {
         const query = searchTerm || "";
         const response = await axios.get(
-          `${apiUrl}/library-searcher/books/search?text=${query}`
+          `${apiUrl}/library-searcher/categories`
         );
-        setBooks(response.data || []);
+        setCategories(response.data || []);
         setError("");
       } catch (err) {
         setError("Error fetching books");
-        setBooks([]);
+        setCategories([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBooks();
+    fetchCategories();
   }, [searchTerm]);
 
-  return { books, loading, error };
+  return { categories, loading, error };
 };

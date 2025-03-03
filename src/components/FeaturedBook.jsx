@@ -1,7 +1,13 @@
 import React from "react";
 import { Star } from "lucide-react";
-
+import { ShoppingCart } from "lucide-react";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { BookModal } from "./BookModal";
+import { DynamicModal } from "./DynamicModal";
 export const FeaturedBook = ({ book }) => {
+  const [selectedBook, setSelectedBook] = useState(null);
+
   if (!book) return null;
 
   const { price, imageUrl, title, author, description, status } = book;
@@ -55,9 +61,28 @@ export const FeaturedBook = ({ book }) => {
                 {status}
               </span>
             </div>
+            <div>
+              <button
+                className="mt-4 flex gap-1 px-4 py-2 bg-fuchsia-400 text-gray-800 hover:bg-fuchsia-700 hover:text-gray-200 font-semibold rounded-md shadow-md hover:shadow-lg transition"
+                onClick={() => setSelectedBook(book)}
+              >
+                <ShoppingCart />
+                Rent Now
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      {/* Modal */}
+      <DynamicModal
+        title="Detail Book"
+        isOpen={!!selectedBook}
+        width="max-w-3xl" // Personaliza el ancho
+        maxHeight="max-h-[80vh]"
+        onClose={() => setSelectedBook(null)}
+      >
+        <BookModal book={selectedBook} />
+      </DynamicModal>
     </div>
   );
 };

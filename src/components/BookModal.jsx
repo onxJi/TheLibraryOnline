@@ -1,6 +1,8 @@
 import React from "react";
-import { X } from "lucide-react";
-
+import { ShoppingCart } from "lucide-react";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import { RentalForm } from "./RentalForm";
 export const BookModal = ({ book, onClose }) => {
   if (!book) return null;
 
@@ -15,6 +17,36 @@ export const BookModal = ({ book, onClose }) => {
     status,
   } = book;
 
+  const [isFormVisible, setIsFormVisible] = useState(false); // Estado para mostrar el formulario
+  const [currentStatus, setCurrentStatus] = useState(status);
+  // Función para manejar el clic en "Rent Now"
+  const handleRentNowClick = () => {
+    if (status === "OPEN") {
+      setIsFormVisible(true); // Mostrar el formulario si el estado es "OPEN"
+    } else {
+      toast.error("This book is not available for rent.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
+
+  const handleStatusUpdate = (newStatus) => {
+    setCurrentStatus(newStatus); // Actualizar el estado local del libro
+    setIsFormVisible(false); // Cerrar el formulario
+    toast.success("Book rented successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
   return (
     <div className="flex flex-col md:flex-row">
       {/* Book Cover */}
@@ -66,7 +98,49 @@ export const BookModal = ({ book, onClose }) => {
             <p className="text-gray-700 leading-relaxed">{description}</p>
           </div>
         )}
+
+        <button
+          className="mt-4 flex gap-1 px-4 py-2 bg-fuchsia-400 text-gray-800 hover:bg-fuchsia-700 hover:text-gray-200 font-semibold rounded-md shadow-md hover:shadow-lg transition"
+          onClick={handleRentNowClick}
+        >
+          <ShoppingCart />
+          Rent Now
+        </button>
       </div>
+
+      {/* Formulario de renta */}
+      {isFormVisible && (
+        <div className="mt-6 p-4 bg-gray-100 rounded-md shadow-md">
+          <div className="flex">
+            <h3 className="text-lg font-semibold mb-4">Rental Form</h3>
+            <button
+              type="button"
+              className="text-gray-600 bg-transparent ml-auto hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => setIsFormVisible(false)}
+            >
+              <svg
+                className="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span className="sr-only">Close modal</span>
+            </button>
+          </div>
+          <RentalForm book={book} onStatusUpdate={handleStatusUpdate} />
+        </div>
+      )}
     </div>
   );
 };
+
+// formulario

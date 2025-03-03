@@ -7,7 +7,7 @@ import { BookGrid } from "../components/BookGrid";
 
 export const CategoryPage = () => {
   const { category } = useParams();
-  const { books, loading, error } = useBooks(`subject:${category}`);
+  const { books, loading, error } = useBooks(`category:${category}`);
 
   return (
     <div className="min-h-screen bg-gray-50">
