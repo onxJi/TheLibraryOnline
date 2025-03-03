@@ -44,11 +44,15 @@ export const RentalForm = ({ book, onStatusUpdate }) => {
     if (!validateForm()) return;
 
     try {
+      const formattedData = {
+        startDate: formData.startDate ? `${formData.startDate}T00:00:00` : null,
+        endDate: formData.endDate ? `${formData.endDate}T00:00:00` : null,
+      };
       // Realizar la solicitud PUT usando el custom hook
-      await request(`/ms-library-operator/rentals/${book.bookId}`, "PUT", {
+      await request(`/library-operator/rentals`, "POST", {
+        title: book.title,
         bookId: book.bookId,
-        ...formData,
-        deliveryDate: formData.endDate,
+        ...formattedData,
         status: "RENTED",
       });
 

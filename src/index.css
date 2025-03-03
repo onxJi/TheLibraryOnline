@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .navbar {
-  @apply bg-slate-800 text-white py-4 px-6 sticky top-0 z-50;
+  @apply bg-slate-800 text-white py-2 px-6 sticky top-0 z-50;
 }
 
 .navbar__container {
@@ -15,7 +15,7 @@
 }
 
 .navbar__search {
-  @apply flex-1 max-w-md mx-4;
+  @apply flex-1 max-w-md;
 }
 
 .search-bar {

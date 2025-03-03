@@ -67,8 +67,8 @@ export const Navbar = () => {
       {/* Menú desplegable (visible solo en móviles) */}
       <div
         className={`${
-          isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        } md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-gray-700 p-4 space-y-4`}
+          isMenuOpen ? "max-h-screen opacity-100 p-4" : "max-h-0 opacity-0"
+        } md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-gray-700 space-y-4 `}
       >
         <form className="navbar__search" onSubmit={handleSubmit}>
           <div className="relative">
