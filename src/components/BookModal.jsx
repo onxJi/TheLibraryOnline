@@ -45,7 +45,7 @@ export const BookModal = ({ book, onClose }) => {
     <div className="flex flex-col md:flex-row">
       {/* Book Cover */}
 
-      <BookCover book={book}/>
+      <BookCover book={book} currentStatus={currentStatus}/>
 
       {/* Book Details */}
       <div className="md:w-2/3 p-6 overflow-y-auto max-h-[80vh]">
@@ -76,17 +76,16 @@ export const BookModal = ({ book, onClose }) => {
         )}
 
         <button
-          className={`${status=="RENTED" ? " hidden " : "" } mt-4 flex gap-1 px-4 py-2 bg-fuchsia-400 text-gray-800 hover:bg-fuchsia-700 hover:text-gray-200 font-semibold rounded-md shadow-md hover:shadow-lg transition`}
+          className={`${
+            currentStatus == "RENTED" ? " hidden " : ""
+          } mt-4 flex gap-1 px-4 py-2 bg-fuchsia-400 text-gray-800 hover:bg-fuchsia-700 hover:text-gray-200 font-semibold rounded-md shadow-md hover:shadow-lg transition`}
           onClick={handleRentNowClick}
         >
           <ShoppingCart />
           Rent Now
         </button>
 
-        { status == "RENTED" && (
-          <RentedBook book={book}/>
-        )}
-
+        {currentStatus == "RENTED" && <RentedBook book={book} />}
       </div>
 
       {/* Formulario de renta */}

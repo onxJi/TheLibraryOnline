@@ -31,9 +31,13 @@ export const RentedBook = ({ book }) => {
       ) : (
         // Mostrar las fechas si los datos están disponibles
         <div>
-          <span>Start Date: {data.startDate || "N/A"}</span>
+          <span className="italic text-sm">
+            Start Date: {data.startDate || "N/A"}
+          </span>
           <br />
-          <span>End Date: {data.endDate || "N/A"}</span>
+          <span className="italic text-sm">
+            End Date: {data.endDate || "N/A"}
+          </span>
         </div>
       )}
     </div>
