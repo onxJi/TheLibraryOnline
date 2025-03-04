@@ -42,7 +42,7 @@ export const HomePage = () => {
             {category && (
               <BookList
                 title={`Books in "${category}"`}
-                books={categoryBooks.slice(0, 8)}
+                books={categoryBooks.slice(0, 9)}
               />
             )}
           </div>
